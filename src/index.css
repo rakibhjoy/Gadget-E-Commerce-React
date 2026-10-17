@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-offwhite text-stone-900 min-h-screen flex flex-col font-sans;
+  }
+}
+
+/* Custom smooth scroll and luxury scrollbar */
+html {
+  scroll-behavior: smooth;
+  background-color: #fcfbf9;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f5f3ee;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d6d3cb;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a29e;
+}
