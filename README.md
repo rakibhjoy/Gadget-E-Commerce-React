@@ -108,15 +108,27 @@ The output will be in the `dist/` folder.
 
 ---
 
-## 🎨 Design System
+## 🎨 Design System (Clean Tech + Warm Orange & Glass UI)
 
-| Token | Value |
-|---|---|
-| Primary Background | `#fcfbf9` (off-white) |
-| Brand Dark | `#1c1917` (warm obsidian) |
-| Accent Gold | `#b45309` (warm amber) |
-| Font Family | Plus Jakarta Sans, Inter |
-| Border Radius | `rounded-2xl` (1rem) |
+| Token | Hex Value | Purpose |
+|---|---|---|
+| Primary Background | `#FFFFFF` | Core layout background |
+| Secondary Background | `#F3F1ED` | Section panels, inputs, secondary blocks |
+| Primary Text | `#252525` | High-contrast readable typography |
+| Primary Accent | `#E98545` | Warm orange CTAs, active highlights, badges |
+| Soft Accent | `#FBE9DC` | Gentle background chips, glow overlays |
+| Border | `#E7E5E1` | Subtle divider lines and card borders |
+| Muted Text | `#777777` | Captions, secondary labels, metadata |
+| Success | `#27845A` | In-stock badges, delivered statuses |
+| Sale Price | `#D9534F` | Discount tags, sale pricing, error highlights |
+| Footer Background | `#252525` | Deep dark footer contrast |
+| Footer Text | `#FFFFFF` | Bright readable footer typography |
+
+### 🪟 Glass UI System
+- `.glass`: Translucent surface with blur (`backdrop-filter: blur(16px)`), subtle warm orange ambient shadow.
+- `.glass-strong`: High opacity glass for sticky headers & modals (`backdrop-filter: blur(24px)`).
+- `.glass-accent`: Warm orange tinted glass for highlighted cards and promo banners.
+- `.glass-chip`: Glass pills and badges.
 
 ---
 

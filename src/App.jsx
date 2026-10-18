@@ -32,7 +32,7 @@ export default function App() {
         <OrderProvider>
           <CartProvider>
             <ScrollToTop />
-            <div className="flex flex-col min-h-screen bg-offwhite text-stone-900 font-sans selection:bg-stone-900 selection:text-white">
+            <div className="flex flex-col min-h-screen bg-white text-primary-text font-sans">
               <Navbar />
               <main className="flex-grow">
                 <Routes>
@@ -50,7 +50,7 @@ export default function App() {
                     element={
                       <div className="py-24 text-center">
                         <h2 className="text-3xl font-bold">404 - Page Not Found</h2>
-                        <p className="mt-2 text-stone-500 text-sm">
+                        <p className="mt-2 text-muted text-sm">
                           The requested page does not exist.
                         </p>
                       </div>

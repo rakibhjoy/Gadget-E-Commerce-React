@@ -54,41 +54,42 @@ export default function OrderTrack() {
       
       {/* Header */}
       <div className="max-w-2xl mx-auto text-center mb-10">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-bold mb-3">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent-soft text-accent text-xs font-bold mb-3 border border-accent/20">
           <Truck className="w-3.5 h-3.5" />
           <span>Joy Express Logistics Tracker</span>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-primary-text tracking-tight">
           Track Your Joy Mart Parcel
         </h1>
-        <p className="mt-2 text-xs sm:text-sm text-stone-500">
-          Enter your Order Number (e.g. <strong>JM-849201</strong>) or your 11-digit Bangladesh mobile phone number.
+        <p className="mt-2 text-xs sm:text-sm text-muted">
+          Enter your Order Number (e.g. <strong className="text-primary-text">JM-849201</strong>) or your 11-digit Bangladesh mobile phone number.
         </p>
 
         {/* Search Bar */}
         <form onSubmit={handleSearch} className="mt-6 flex flex-col sm:flex-row gap-3">
           <div className="relative flex-grow">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" />
             <input
               type="text"
               required
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Enter Order ID or Mobile (017XXXXXXXX)..."
-              className="w-full pl-11 pr-4 py-3.5 text-sm bg-white border border-stone-300 rounded-2xl focus:outline-none focus:border-stone-900 shadow-xs"
+              className="w-full pl-11 pr-4 py-3.5 text-sm bg-secondary-bg/50 border border-border rounded-2xl focus:outline-none focus:border-accent focus:bg-white transition-all shadow-xs"
             />
           </div>
           <button
             type="submit"
-            className="px-8 py-3.5 bg-stone-900 hover:bg-stone-800 text-white rounded-2xl text-sm font-bold shadow-sm transition-all active:scale-95"
+            className="px-8 py-3.5 bg-accent hover:bg-accent-hover text-white rounded-2xl text-sm font-bold shadow-sm transition-all active:scale-95 flex items-center justify-center gap-2"
           >
-            Track Parcel
+            <span>Track Parcel</span>
+            <ArrowRight className="w-4 h-4" />
           </button>
         </form>
 
         {/* Quick sample chips */}
         {orders.length > 0 && (
-          <div className="mt-3 flex items-center justify-center gap-2 text-[11px] text-stone-500 flex-wrap">
+          <div className="mt-3 flex items-center justify-center gap-2 text-[11px] text-muted flex-wrap">
             <span>Recent Orders:</span>
             {orders.slice(0, 3).map((o) => (
               <button
@@ -99,7 +100,7 @@ export default function OrderTrack() {
                   setSearchedOrder(o);
                   setSearchParams({ id: o.id });
                 }}
-                className="font-bold text-stone-700 hover:text-stone-950 underline"
+                className="font-bold text-primary-text hover:text-accent underline transition-colors"
               >
                 {o.id}
               </button>
@@ -113,27 +114,27 @@ export default function OrderTrack() {
         <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-300">
           
           {/* Main Status Hero Card */}
-          <div className="bg-white border border-stone-200/90 rounded-3xl p-6 sm:p-10 shadow-xs">
+          <div className="glass rounded-3xl p-6 sm:p-10 shadow-glass border border-border/80">
             
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-6 border-b border-stone-100 gap-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-6 border-b border-border/60 gap-4">
               <div>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-amber-700 block mb-1">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-accent block mb-1">
                   Joy Express Delivery Status
                 </span>
-                <h2 className="text-2xl font-black text-stone-900 flex items-center gap-2">
+                <h2 className="text-2xl font-black text-primary-text flex items-center gap-2">
                   <span>{searchedOrder.id}</span>
-                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-500 text-stone-950">
+                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-accent text-white shadow-xs">
                     {searchedOrder.status}
                   </span>
                 </h2>
-                <p className="text-xs text-stone-500 mt-1">
-                  Ordered on {searchedOrder.date} • Courier: <strong>{searchedOrder.courier}</strong>
+                <p className="text-xs text-muted mt-1">
+                  Ordered on {searchedOrder.date} • Courier: <strong className="text-primary-text">{searchedOrder.courier}</strong>
                 </p>
               </div>
 
-              <div className="sm:text-right bg-stone-50 sm:bg-transparent p-3 sm:p-0 rounded-xl w-full sm:w-auto">
-                <span className="text-xs text-stone-400 block font-medium">Estimated Arrival</span>
-                <span className="text-lg font-bold text-emerald-700">
+              <div className="sm:text-right bg-secondary-bg sm:bg-secondary-bg/50 p-3 sm:p-4 rounded-2xl border border-border/50 w-full sm:w-auto">
+                <span className="text-xs text-muted block font-medium">Estimated Arrival</span>
+                <span className="text-lg font-bold text-success">
                   {searchedOrder.estimatedDelivery}
                 </span>
               </div>
@@ -141,24 +142,23 @@ export default function OrderTrack() {
 
             {/* Visual Tracking Progress Timeline */}
             <div className="py-8">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-stone-400 mb-6">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-muted mb-6">
                 Shipment Milestones
               </h3>
 
               <div className="relative">
-                {/* Horizontal / Vertical Line */}
                 <div className="space-y-6 sm:space-y-0 sm:grid sm:grid-cols-5 gap-3 relative">
                   {(searchedOrder.timeline || []).map((step, idx) => (
                     <div key={idx} className="relative flex sm:flex-col items-start gap-3 sm:gap-2">
                       <div
-                        className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold z-10 transition-colors ${
+                        className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold z-10 transition-all ${
                           step.completed
-                            ? 'bg-stone-900 text-white'
-                            : 'bg-stone-100 text-stone-400 border border-stone-200'
-                        } ${step.current ? 'ring-4 ring-amber-500/30 bg-amber-500 text-stone-950' : ''}`}
+                            ? 'bg-primary-text text-white'
+                            : 'bg-secondary-bg text-muted border border-border'
+                        } ${step.current ? 'ring-4 ring-accent/30 bg-accent text-white shadow-sm' : ''}`}
                       >
                         {step.completed ? (
-                          <CheckCircle2 className="w-4 h-4" />
+                          <CheckCircle2 className="w-4 h-4 text-accent" />
                         ) : (
                           <span>{idx + 1}</span>
                         )}
@@ -167,12 +167,12 @@ export default function OrderTrack() {
                       <div>
                         <h4
                           className={`text-xs font-bold leading-tight ${
-                            step.completed ? 'text-stone-900' : 'text-stone-400'
-                          } ${step.current ? 'text-amber-800' : ''}`}
+                            step.completed ? 'text-primary-text' : 'text-muted'
+                          } ${step.current ? 'text-accent' : ''}`}
                         >
                           {step.step}
                         </h4>
-                        <span className="text-[10px] text-stone-400 block mt-0.5">
+                        <span className="text-[10px] text-muted block mt-0.5">
                           {step.time}
                         </span>
                       </div>
@@ -183,39 +183,39 @@ export default function OrderTrack() {
             </div>
 
             {/* Delivery Details & Recipient Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-6 border-t border-stone-100 text-xs">
-              <div className="p-4 bg-stone-50 rounded-2xl border border-stone-200/80 space-y-1.5">
-                <div className="flex items-center gap-2 font-bold text-stone-900 mb-1">
-                  <MapPin className="w-4 h-4 text-amber-600" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-6 border-t border-border/60 text-xs">
+              <div className="p-4 bg-secondary-bg/60 rounded-2xl border border-border/70 space-y-1.5">
+                <div className="flex items-center gap-2 font-bold text-primary-text mb-1">
+                  <MapPin className="w-4 h-4 text-accent" />
                   <span>Delivery Destination</span>
                 </div>
-                <p className="font-semibold text-stone-800">
+                <p className="font-semibold text-primary-text">
                   {searchedOrder.customer?.name} ({searchedOrder.customer?.phone})
                 </p>
-                <p className="text-stone-600">
+                <p className="text-primary-text/80">
                   {searchedOrder.deliveryAddress?.address}
                 </p>
-                <p className="text-stone-500">
+                <p className="text-muted">
                   {searchedOrder.deliveryAddress?.area}, {searchedOrder.deliveryAddress?.city}
                 </p>
               </div>
 
-              <div className="p-4 bg-stone-50 rounded-2xl border border-stone-200/80 space-y-1.5">
-                <div className="flex items-center gap-2 font-bold text-stone-900 mb-1">
-                  <ShieldCheck className="w-4 h-4 text-amber-600" />
+              <div className="p-4 bg-secondary-bg/60 rounded-2xl border border-border/70 space-y-1.5">
+                <div className="flex items-center gap-2 font-bold text-primary-text mb-1">
+                  <ShieldCheck className="w-4 h-4 text-accent" />
                   <span>Payment & Logistics Info</span>
                 </div>
-                <div className="flex justify-between text-stone-600">
+                <div className="flex justify-between text-muted">
                   <span>Payment Method:</span>
-                  <strong className="text-stone-900">{searchedOrder.paymentMethod}</strong>
+                  <strong className="text-primary-text">{searchedOrder.paymentMethod}</strong>
                 </div>
-                <div className="flex justify-between text-stone-600">
+                <div className="flex justify-between text-muted">
                   <span>Total Amount:</span>
-                  <strong className="text-stone-900">{formatBDT(searchedOrder.total)}</strong>
+                  <strong className="text-primary-text font-black">{formatBDT(searchedOrder.total)}</strong>
                 </div>
-                <div className="flex justify-between text-stone-600">
+                <div className="flex justify-between text-muted">
                   <span>Customer Type:</span>
-                  <span className="text-stone-800 font-medium">
+                  <span className="text-primary-text font-medium">
                     {searchedOrder.customer?.isGuest ? 'Guest Checkout' : 'Verified Joy Mart Account'}
                   </span>
                 </div>
@@ -223,30 +223,30 @@ export default function OrderTrack() {
             </div>
 
             {/* Items in this parcel */}
-            <div className="mt-8 pt-6 border-t border-stone-100">
-              <h4 className="text-xs font-bold text-stone-900 uppercase tracking-wider mb-4">
+            <div className="mt-8 pt-6 border-t border-border/60">
+              <h4 className="text-xs font-bold text-primary-text uppercase tracking-wider mb-4">
                 Parcel Contents ({(searchedOrder.items || []).length} items)
               </h4>
 
-              <div className="divide-y divide-stone-100">
+              <div className="divide-y divide-border/60">
                 {(searchedOrder.items || []).map((item, idx) => (
                   <div key={idx} className="py-3 flex items-center justify-between gap-4">
                     <div className="flex items-center gap-3">
                       <img
                         src={item.product?.image}
                         alt={item.product?.name}
-                        className="w-12 h-12 rounded-xl object-cover bg-stone-100 border border-stone-200"
+                        className="w-12 h-12 rounded-xl object-cover bg-secondary-bg border border-border"
                       />
                       <div>
-                        <h5 className="font-bold text-xs text-stone-900">
+                        <h5 className="font-bold text-xs text-primary-text">
                           {item.product?.name}
                         </h5>
-                        <span className="text-[11px] text-stone-400">
+                        <span className="text-[11px] text-muted">
                           Qty: {item.quantity} × {formatBDT(item.product?.price)}
                         </span>
                       </div>
                     </div>
-                    <span className="text-xs font-bold text-stone-900">
+                    <span className="text-xs font-bold text-primary-text">
                       {formatBDT((item.product?.price || 0) * (item.quantity || 1))}
                     </span>
                   </div>
@@ -257,19 +257,19 @@ export default function OrderTrack() {
           </div>
 
           {/* Hotline assistance strip */}
-          <div className="p-5 bg-white border border-stone-200 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left shadow-2xs">
+          <div className="p-5 glass rounded-2xl border border-border flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left shadow-xs">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 rounded-xl bg-accent-soft text-accent flex items-center justify-center flex-shrink-0">
                 <PhoneCall className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="text-xs sm:text-sm font-bold text-stone-900">Have questions about this parcel?</h4>
-                <p className="text-[11px] text-stone-500">Call Joy Mart rider hotline for live status updates.</p>
+                <h4 className="text-xs sm:text-sm font-bold text-primary-text">Have questions about this parcel?</h4>
+                <p className="text-[11px] text-muted">Call Joy Mart rider hotline for live status updates.</p>
               </div>
             </div>
             <a
               href="tel:+8801700000000"
-              className="px-5 py-2.5 bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold rounded-xl transition-colors whitespace-nowrap"
+              className="px-5 py-2.5 bg-primary-text hover:bg-neutral-800 text-white text-xs font-bold rounded-xl transition-colors whitespace-nowrap shadow-xs"
             >
               Call +880 1700-JOYMART
             </a>
@@ -278,15 +278,15 @@ export default function OrderTrack() {
         </div>
       ) : searchAttempted ? (
         /* Not found */
-        <div className="max-w-md mx-auto py-16 text-center bg-white border border-dashed border-stone-300 rounded-3xl p-8">
-          <AlertCircle className="w-10 h-10 text-rose-500 mx-auto mb-3" />
-          <h3 className="text-base font-bold text-stone-900">No Parcel Found</h3>
-          <p className="text-xs text-stone-500 mt-1 max-w-xs mx-auto">
+        <div className="max-w-md mx-auto py-16 text-center glass border border-dashed border-border rounded-3xl p-8">
+          <AlertCircle className="w-10 h-10 text-sale mx-auto mb-3" />
+          <h3 className="text-base font-bold text-primary-text">No Parcel Found</h3>
+          <p className="text-xs text-muted mt-1 max-w-xs mx-auto">
             We couldn't find any orders matching "{query}". Please verify the Order ID or the phone number used during checkout.
           </p>
           <button
             onClick={() => setQuery('')}
-            className="mt-5 px-5 py-2.5 bg-stone-900 text-white text-xs font-bold rounded-xl"
+            className="mt-5 px-5 py-2.5 bg-primary-text hover:bg-neutral-800 text-white text-xs font-bold rounded-xl transition-all"
           >
             Try Another Search
           </button>

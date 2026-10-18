@@ -92,35 +92,35 @@ export default function Products() {
       
       {/* Header & Description */}
       <div className="mb-10 text-center sm:text-left">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-100 text-stone-700 text-xs font-semibold mb-3">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FBE9DC] text-[#E98545] text-xs font-semibold mb-3">
           <span>Joy Mart Certified Catalog</span>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-[#252525] tracking-tight">
           All Gadgets & Tech Gear
         </h1>
-        <p className="mt-2 text-sm text-stone-500 max-w-xl">
+        <p className="mt-2 text-sm text-[#777777] max-w-xl">
           Original smartphones, Apple & Windows laptops, studio audio, and everyday tech accessories with official Bangladesh warranty.
         </p>
       </div>
 
-      {/* Search and Filters Bar */}
-      <div className="bg-white border border-stone-200/90 rounded-2xl p-4 sm:p-5 mb-8 shadow-xs space-y-4">
+      {/* Search and Filters Bar — Glass */}
+      <div className="glass rounded-2xl p-4 sm:p-5 mb-8 shadow-glass-card space-y-4">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 justify-between">
           
           {/* Search Box */}
           <div className="relative flex-grow max-w-md">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#777777]" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search Joy Mart gadgets by name or specs..."
-              className="w-full pl-10 pr-10 py-2.5 text-sm bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:border-stone-900 focus:bg-white transition-colors"
+              className="w-full pl-10 pr-10 py-2.5 text-sm bg-[#F3F1ED] border border-[#E7E5E1] rounded-xl focus:outline-none focus:border-[#E98545] focus:bg-white transition-colors"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-700"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#777777] hover:text-[#252525]"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -133,8 +133,8 @@ export default function Products() {
               onClick={toggleDealsOnly}
               className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-colors ${
                 dealsOnly
-                  ? 'bg-amber-500 border-amber-600 text-stone-950'
-                  : 'bg-stone-50 border-stone-200 text-stone-700 hover:bg-stone-100'
+                  ? 'bg-[#E98545] border-[#D6742F] text-white'
+                  : 'bg-[#F3F1ED] border-[#E7E5E1] text-[#252525] hover:bg-[#FBE9DC]'
               }`}
             >
               <Flame className="w-3.5 h-3.5" />
@@ -143,11 +143,11 @@ export default function Products() {
 
             {/* Sort Dropdown */}
             <div className="flex items-center gap-2">
-              <SlidersHorizontal className="w-4 h-4 text-stone-500" />
+              <SlidersHorizontal className="w-4 h-4 text-[#777777]" />
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="text-xs sm:text-sm bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-stone-700 focus:outline-none focus:border-stone-900"
+                className="text-xs sm:text-sm bg-[#F3F1ED] border border-[#E7E5E1] rounded-xl px-3 py-2 text-[#252525] focus:outline-none focus:border-[#E98545]"
               >
                 <option value="featured">Sort by: Featured</option>
                 <option value="price-low">Price: Low to High</option>
@@ -160,7 +160,7 @@ export default function Products() {
         </div>
 
         {/* Category Pills */}
-        <div className="flex items-center gap-2 overflow-x-auto pt-3 border-t border-stone-100 no-scrollbar">
+        <div className="flex items-center gap-2 overflow-x-auto pt-3 border-t border-[#E7E5E1] no-scrollbar">
           {categories.map((cat) => {
             const isActive = selectedCategory.toLowerCase() === cat.toLowerCase();
             return (
@@ -169,8 +169,8 @@ export default function Products() {
                 onClick={() => handleCategoryChange(cat)}
                 className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
                   isActive
-                    ? 'bg-stone-900 text-white shadow-xs'
-                    : 'bg-stone-100 text-stone-600 hover:bg-stone-200 hover:text-stone-950'
+                    ? 'bg-[#E98545] text-white shadow-xs'
+                    : 'bg-[#F3F1ED] text-[#777777] hover:bg-[#FBE9DC] hover:text-[#E98545]'
                 }`}
               >
                 {cat}
@@ -181,15 +181,15 @@ export default function Products() {
       </div>
 
       {/* Results Count & Reset Controls */}
-      <div className="flex items-center justify-between text-xs text-stone-500 mb-6">
+      <div className="flex items-center justify-between text-xs text-[#777777] mb-6">
         <span>
-          Showing <strong className="text-stone-900">{filteredProducts.length}</strong> of{' '}
+          Showing <strong className="text-[#252525]">{filteredProducts.length}</strong> of{' '}
           {products.length} Joy Mart gadgets
         </span>
         {(searchQuery || selectedCategory !== 'All' || dealsOnly) && (
           <button
             onClick={handleResetFilters}
-            className="text-stone-800 hover:text-stone-950 font-bold inline-flex items-center gap-1 hover:underline"
+            className="text-[#252525] hover:text-[#E98545] font-bold inline-flex items-center gap-1 hover:underline"
           >
             <RefreshCw className="w-3 h-3" />
             <span>Reset all filters</span>
@@ -206,17 +206,17 @@ export default function Products() {
         </div>
       ) : (
         /* Empty / No Results State */
-        <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-stone-300 shadow-xs">
-          <div className="w-14 h-14 mx-auto rounded-full bg-stone-100 flex items-center justify-center text-stone-500 mb-4">
+        <div className="text-center py-20 glass rounded-3xl border border-dashed border-[#E7E5E1] shadow-glass-card">
+          <div className="w-14 h-14 mx-auto rounded-full bg-[#F3F1ED] flex items-center justify-center text-[#777777] mb-4">
             <Search className="w-6 h-6" />
           </div>
-          <h3 className="text-lg font-bold text-stone-900">No gadgets found</h3>
-          <p className="text-xs text-stone-500 mt-1 max-w-sm mx-auto">
+          <h3 className="text-lg font-bold text-[#252525]">No gadgets found</h3>
+          <p className="text-xs text-[#777777] mt-1 max-w-sm mx-auto">
             We couldn't find any products matching your criteria. Try adjusting your search keyword or switching categories.
           </p>
           <button
             onClick={handleResetFilters}
-            className="mt-5 px-5 py-2.5 bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold rounded-xl transition-colors shadow-xs"
+            className="mt-5 px-5 py-2.5 bg-[#E98545] hover:bg-[#D6742F] text-white text-xs font-bold rounded-xl transition-colors shadow-xs"
           >
             Clear Search & Filters
           </button>

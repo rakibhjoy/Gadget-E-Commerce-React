@@ -4,14 +4,14 @@
 
 @layer base {
   body {
-    @apply bg-offwhite text-stone-900 min-h-screen flex flex-col font-sans;
+    @apply bg-white text-primary-text min-h-screen flex flex-col font-sans;
   }
 }
 
 /* Custom smooth scroll and luxury scrollbar */
 html {
   scroll-behavior: smooth;
-  background-color: #fcfbf9;
+  background-color: #FFFFFF;
 }
 
 ::-webkit-scrollbar {
@@ -20,14 +20,83 @@ html {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f5f3ee;
+  background: #F3F1ED;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d6d3cb;
+  background: #E7E5E1;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a8a29e;
+  background: #E98545;
+}
+
+/* ───── Glass UI Utility Classes ───── */
+@layer utilities {
+
+  /* Primary glass card — translucent white with warm orange tint */
+  .glass {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(231, 229, 225, 0.55);
+    box-shadow: 0 8px 32px 0 rgba(233, 133, 69, 0.06);
+  }
+
+  /* Stronger glass for navbars and sticky headers */
+  .glass-strong {
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(24px) saturate(200%);
+    -webkit-backdrop-filter: blur(24px) saturate(200%);
+    border: 1px solid rgba(231, 229, 225, 0.6);
+    box-shadow: 0 4px 24px 0 rgba(37, 37, 37, 0.05);
+  }
+
+  /* Subtle tinted glass with warm orange glow */
+  .glass-accent {
+    background: rgba(251, 233, 220, 0.45);
+    backdrop-filter: blur(12px) saturate(160%);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+    border: 1px solid rgba(233, 133, 69, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(233, 133, 69, 0.08);
+  }
+
+  /* Dark glass for footer / dark sections */
+  .glass-dark {
+    background: rgba(37, 37, 37, 0.92);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 -4px 32px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  /* Small glass chip / pill */
+  .glass-chip {
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(231, 229, 225, 0.5);
+  }
+
+  /* Warm glow animation for accent elements */
+  .glow-accent {
+    box-shadow: 0 0 20px rgba(233, 133, 69, 0.25), 0 0 60px rgba(233, 133, 69, 0.1);
+  }
+
+  /* Soft pulse animation */
+  .animate-glow-pulse {
+    animation: glowPulse 3s ease-in-out infinite;
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(233, 133, 69, 0.15); }
+  50% { box-shadow: 0 0 40px rgba(233, 133, 69, 0.3); }
+}
+
+/* Selection highlight */
+::selection {
+  background-color: #E98545;
+  color: #FFFFFF;
 }

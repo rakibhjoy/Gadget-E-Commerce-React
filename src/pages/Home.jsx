@@ -51,7 +51,7 @@ export default function Home() {
       
       {/* Grand Hero Promotional Banner Slider */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
-        <div className="relative rounded-3xl overflow-hidden bg-stone-900 text-white min-h-[460px] sm:min-h-[520px] flex items-center shadow-xl">
+        <div className="relative rounded-3xl overflow-hidden bg-[#252525] text-white min-h-[460px] sm:min-h-[520px] flex items-center shadow-glass-lg">
           
           {/* Background Image with Gradient Overlay */}
           <div className="absolute inset-0">
@@ -60,13 +60,13 @@ export default function Home() {
               alt={activeBanner.title}
               className="w-full h-full object-cover object-center opacity-40 scale-105 transition-all duration-1000 ease-out"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-stone-950 via-stone-950/80 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-[#252525] via-[#252525]/80 to-transparent"></div>
           </div>
 
           {/* Banner Content */}
           <div className="relative z-10 max-w-2xl px-6 sm:px-12 py-12">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/20 border border-amber-500/30 text-amber-300 text-xs font-bold tracking-wide mb-6 backdrop-blur-sm">
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E98545]/20 border border-[#E98545]/30 text-[#E98545] text-xs font-bold tracking-wide mb-6 backdrop-blur-sm">
+              <Sparkles className="w-3.5 h-3.5 text-[#E98545]" />
               <span>{activeBanner.tag} • {activeBanner.badge}</span>
             </div>
 
@@ -74,14 +74,14 @@ export default function Home() {
               {activeBanner.title}
             </h1>
 
-            <p className="mt-5 text-sm sm:text-base text-stone-300 leading-relaxed font-light max-w-lg">
+            <p className="mt-5 text-sm sm:text-base text-white/60 leading-relaxed font-light max-w-lg">
               {activeBanner.subtitle}
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Link
                 to={activeBanner.link}
-                className="inline-flex items-center gap-2 px-7 py-3.5 bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold rounded-xl transition-all text-sm shadow-md active:scale-95"
+                className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#E98545] hover:bg-[#D6742F] text-white font-bold rounded-xl transition-all text-sm shadow-md active:scale-95"
               >
                 <span>{activeBanner.cta}</span>
                 <ArrowRight className="w-4 h-4" />
@@ -101,7 +101,7 @@ export default function Home() {
                   key={b.id}
                   onClick={() => setCurrentBannerIndex(idx)}
                   className={`h-2 rounded-full transition-all ${
-                    idx === currentBannerIndex ? 'w-8 bg-amber-400' : 'w-2 bg-stone-600'
+                    idx === currentBannerIndex ? 'w-8 bg-[#E98545]' : 'w-2 bg-white/30'
                   }`}
                   aria-label={`Go to slide ${idx + 1}`}
                 />
@@ -112,74 +112,74 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Trust & Guarantee Strip (Off-White Luxury Card) */}
+      {/* Trust & Guarantee Strip — Glass Card */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white border border-stone-200/90 rounded-2xl p-6 shadow-sm">
+        <div className="glass rounded-2xl p-6 shadow-glass-card">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className="flex items-center gap-3.5">
-              <div className="w-11 h-11 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center flex-shrink-0">
+              <div className="w-11 h-11 rounded-xl bg-[#FBE9DC] text-[#E98545] flex items-center justify-center flex-shrink-0">
                 <ShieldCheck className="w-6 h-6" />
               </div>
               <div>
-                <h4 className="text-xs sm:text-sm font-bold text-stone-900">100% Genuine Tech</h4>
-                <p className="text-[11px] text-stone-500">Official brand sealed packs</p>
+                <h4 className="text-xs sm:text-sm font-bold text-[#252525]">100% Genuine Tech</h4>
+                <p className="text-[11px] text-[#777777]">Official brand sealed packs</p>
               </div>
             </div>
 
             <div className="flex items-center gap-3.5">
-              <div className="w-11 h-11 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center flex-shrink-0">
+              <div className="w-11 h-11 rounded-xl bg-[#FBE9DC] text-[#E98545] flex items-center justify-center flex-shrink-0">
                 <Truck className="w-6 h-6" />
               </div>
               <div>
-                <h4 className="text-xs sm:text-sm font-bold text-stone-900">Fast BD Delivery</h4>
-                <p className="text-[11px] text-stone-500">24h Dhaka, 48h Nationwide</p>
+                <h4 className="text-xs sm:text-sm font-bold text-[#252525]">Fast BD Delivery</h4>
+                <p className="text-[11px] text-[#777777]">24h Dhaka, 48h Nationwide</p>
               </div>
             </div>
 
             <div className="flex items-center gap-3.5">
-              <div className="w-11 h-11 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center flex-shrink-0">
+              <div className="w-11 h-11 rounded-xl bg-[#FBE9DC] text-[#E98545] flex items-center justify-center flex-shrink-0">
                 <CreditCard className="w-6 h-6" />
               </div>
               <div>
-                <h4 className="text-xs sm:text-sm font-bold text-stone-900">0% EMI Available</h4>
-                <p className="text-[11px] text-stone-500">Up to 36 months bank EMI</p>
+                <h4 className="text-xs sm:text-sm font-bold text-[#252525]">0% EMI Available</h4>
+                <p className="text-[11px] text-[#777777]">Up to 36 months bank EMI</p>
               </div>
             </div>
 
             <div className="flex items-center gap-3.5">
-              <div className="w-11 h-11 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center flex-shrink-0">
+              <div className="w-11 h-11 rounded-xl bg-[#FBE9DC] text-[#E98545] flex items-center justify-center flex-shrink-0">
                 <RotateCcw className="w-6 h-6" />
               </div>
               <div>
-                <h4 className="text-xs sm:text-sm font-bold text-stone-900">7-Day Replacement</h4>
-                <p className="text-[11px] text-stone-500">Hassle-free return policy</p>
+                <h4 className="text-xs sm:text-sm font-bold text-[#252525]">7-Day Replacement</h4>
+                <p className="text-[11px] text-[#777777]">Hassle-free return policy</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Flash Deals / Hot Offers Section */}
+      {/* Flash Deals / Hot Offers Section — Glass Accent */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-gradient-to-r from-amber-500/10 via-stone-50 to-amber-500/10 border border-amber-200/60 rounded-3xl p-6 sm:p-10 shadow-xs">
+        <div className="glass-accent rounded-3xl p-6 sm:p-10">
           
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
             <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500 text-stone-950 font-bold text-xs mb-2">
-                <Flame className="w-4 h-4 fill-stone-950" />
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E98545] text-white font-bold text-xs mb-2">
+                <Flame className="w-4 h-4 fill-white" />
                 <span>LIMITED TIME DEALS</span>
               </div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-stone-900 tracking-tight">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#252525] tracking-tight">
                 Joy Mart Flash Sale
               </h2>
-              <p className="text-xs sm:text-sm text-stone-500 mt-1">
+              <p className="text-xs sm:text-sm text-[#777777] mt-1">
                 Special markdown prices on top smartphones, audio, and wearables.
               </p>
             </div>
 
             <Link
               to="/products?deal=true"
-              className="inline-flex items-center gap-1.5 px-4 py-2 bg-stone-900 hover:bg-stone-800 text-white rounded-lg text-xs font-semibold self-start sm:self-auto transition-colors"
+              className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#252525] hover:bg-[#3a3a3a] text-white rounded-lg text-xs font-semibold self-start sm:self-auto transition-colors"
             >
               <span>View All Deals</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -199,16 +199,16 @@ export default function Home() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-amber-700 block">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#E98545] block">
               Curated Collections
             </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-stone-900 tracking-tight mt-1">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#252525] tracking-tight mt-1">
               Shop by Category
             </h2>
           </div>
           <Link
             to="/products"
-            className="text-xs sm:text-sm font-semibold text-stone-700 hover:text-stone-950 flex items-center gap-1 hover:underline"
+            className="text-xs sm:text-sm font-semibold text-[#252525] hover:text-[#E98545] flex items-center gap-1 hover:underline"
           >
             <span>All Categories</span>
             <ChevronRight className="w-4 h-4" />
@@ -222,15 +222,15 @@ export default function Home() {
               <Link
                 key={cat.name}
                 to={`/products?category=${encodeURIComponent(cat.name)}`}
-                className="group relative bg-white border border-stone-200 rounded-2xl p-4 flex flex-col items-center text-center hover:border-stone-900 hover:shadow-md transition-all duration-300"
+                className="group relative glass rounded-2xl p-4 flex flex-col items-center text-center hover:border-[#E98545]/50 hover:shadow-glass transition-all duration-300"
               >
-                <div className="w-14 h-14 rounded-2xl bg-stone-100 flex items-center justify-center text-stone-800 group-hover:bg-stone-900 group-hover:text-white transition-colors mb-3">
+                <div className="w-14 h-14 rounded-2xl bg-[#F3F1ED] flex items-center justify-center text-[#252525] group-hover:bg-[#E98545] group-hover:text-white transition-colors mb-3">
                   <Icon className="w-6 h-6" />
                 </div>
-                <h3 className="font-bold text-xs sm:text-sm text-stone-900 group-hover:text-amber-700 transition-colors">
+                <h3 className="font-bold text-xs sm:text-sm text-[#252525] group-hover:text-[#E98545] transition-colors">
                   {cat.name}
                 </h3>
-                <span className="text-[11px] text-stone-400 mt-0.5">{cat.count}</span>
+                <span className="text-[11px] text-[#777777] mt-0.5">{cat.count}</span>
               </Link>
             );
           })}
@@ -241,16 +241,16 @@ export default function Home() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-2">
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-stone-400 block">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#777777] block">
               Handpicked Essentials
             </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-stone-900 tracking-tight mt-1">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#252525] tracking-tight mt-1">
               Featured Flagships
             </h2>
           </div>
           <Link
             to="/products"
-            className="text-xs sm:text-sm font-semibold text-stone-800 hover:underline flex items-center gap-1"
+            className="text-xs sm:text-sm font-semibold text-[#252525] hover:text-[#E98545] hover:underline flex items-center gap-1"
           >
             <span>Browse Full Catalog</span>
             <ArrowRight className="w-4 h-4" />
@@ -268,14 +268,14 @@ export default function Home() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           
-          <div className="relative rounded-3xl overflow-hidden bg-stone-900 text-white p-8 sm:p-10 flex flex-col justify-between min-h-[320px] group shadow-sm">
+          <div className="relative rounded-3xl overflow-hidden bg-[#252525] text-white p-8 sm:p-10 flex flex-col justify-between min-h-[320px] group shadow-glass">
             <img
               src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=800&q=80"
               alt="Pro Studio Headphones"
               className="absolute inset-0 w-full h-full object-cover opacity-35 group-hover:scale-105 transition-transform duration-700"
             />
             <div className="relative z-10">
-              <span className="text-xs font-bold uppercase tracking-wider text-amber-400 block mb-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#E98545] block mb-2">
                 Acoustic Clarity
               </span>
               <h3 className="text-2xl sm:text-3xl font-extrabold leading-snug">
@@ -285,7 +285,7 @@ export default function Home() {
             <div className="relative z-10 pt-6">
               <Link
                 to="/products?category=Audio%20%26%20Sound"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-stone-950 font-bold rounded-xl text-xs hover:bg-stone-100 transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-[#252525] font-bold rounded-xl text-xs hover:bg-[#FBE9DC] transition-colors"
               >
                 <span>Shop Audio Gear</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -293,14 +293,14 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="relative rounded-3xl overflow-hidden bg-stone-900 text-white p-8 sm:p-10 flex flex-col justify-between min-h-[320px] group shadow-sm">
+          <div className="relative rounded-3xl overflow-hidden bg-[#252525] text-white p-8 sm:p-10 flex flex-col justify-between min-h-[320px] group shadow-glass">
             <img
               src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80"
               alt="Pro Laptops"
               className="absolute inset-0 w-full h-full object-cover opacity-35 group-hover:scale-105 transition-transform duration-700"
             />
             <div className="relative z-10">
-              <span className="text-xs font-bold uppercase tracking-wider text-amber-400 block mb-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#E98545] block mb-2">
                 Creator Workstations
               </span>
               <h3 className="text-2xl sm:text-3xl font-extrabold leading-snug">
@@ -310,7 +310,7 @@ export default function Home() {
             <div className="relative z-10 pt-6">
               <Link
                 to="/products?category=Laptops"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-500 text-stone-950 font-bold rounded-xl text-xs hover:bg-amber-400 transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#E98545] text-white font-bold rounded-xl text-xs hover:bg-[#D6742F] transition-colors"
               >
                 <span>Discover Laptops</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -321,28 +321,28 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Joy Mart VIP Club / Discount Voucher Banner */}
+      {/* Joy Mart VIP Club / Discount Voucher Banner — Glass Card */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="border border-stone-200/90 rounded-3xl bg-white p-8 sm:p-12 text-center max-w-4xl mx-auto shadow-sm">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-bold mb-4">
+        <div className="glass rounded-3xl p-8 sm:p-12 text-center max-w-4xl mx-auto shadow-glass-card">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FBE9DC] text-[#E98545] text-xs font-bold mb-4">
             <Sparkles className="w-3.5 h-3.5" />
             <span>JOY MART PRIVILEGE CLUB</span>
           </div>
-          <h3 className="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
+          <h3 className="text-2xl sm:text-4xl font-extrabold text-[#252525] tracking-tight">
             Get ৳500 Off Your First Order
           </h3>
-          <p className="mt-3 text-sm text-stone-500 max-w-md mx-auto leading-relaxed">
+          <p className="mt-3 text-sm text-[#777777] max-w-md mx-auto leading-relaxed">
             Join 45,000+ tech lovers across Bangladesh. Receive exclusive secret coupon codes, flash deal alerts, and warranty priority support.
           </p>
           <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
             <input
               type="email"
               placeholder="Enter your phone or email..."
-              className="w-full sm:w-auto flex-grow px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-stone-900"
+              className="w-full sm:w-auto flex-grow px-4 py-3 bg-[#F3F1ED] border border-[#E7E5E1] rounded-xl text-xs sm:text-sm focus:outline-none focus:border-[#E98545] focus:bg-white transition-colors"
             />
             <button
               onClick={() => alert('Welcome to Joy Mart VIP Club! Your ৳500 voucher code is: JOY500')}
-              className="w-full sm:w-auto px-6 py-3 bg-stone-900 hover:bg-stone-800 text-white font-bold rounded-xl text-xs sm:text-sm transition-colors whitespace-nowrap"
+              className="w-full sm:w-auto px-6 py-3 bg-[#E98545] hover:bg-[#D6742F] text-white font-bold rounded-xl text-xs sm:text-sm transition-colors whitespace-nowrap"
             >
               Claim Voucher
             </button>
