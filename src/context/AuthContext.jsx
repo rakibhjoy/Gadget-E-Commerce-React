@@ -1,225 +1,117 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { useState } from 'react';
+import PropTypes from 'prop-types';
+import { AuthContext } from './storeContexts';
+import { readList, readStorage } from '../utils/storage';
 
-const AuthContext = createContext();
-
-const DEMO_USERS_KEY = 'joymart_users';
-const CURRENT_USER_KEY = 'joymart_user';
-
-const INITIAL_DEMO_USER = {
-  name: 'Joy Ahmed',
-  email: 'demo@joymart.com',
-  password: 'password123',
-  phone: '01711234567',
+const USERS = 'joymart_users';
+const SESSION = 'joymart_user';
+const DEMO = {
+  name: 'Joy Ahmed', email: 'demo@joymart.com', password: 'password123', phone: '01711234567',
   avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
   addresses: [
-    {
-      id: 'addr-1',
-      label: 'Home',
-      recipientName: 'Joy Ahmed',
-      phone: '01711234567',
-      city: 'Dhaka',
-      area: 'Gulshan-2',
-      address: 'House 42, Road 11, Block D',
-      isDefault: true,
-    },
-    {
-      id: 'addr-2',
-      label: 'Office',
-      recipientName: 'Joy Ahmed',
-      phone: '01711234567',
-      city: 'Dhaka',
-      area: 'Banani',
-      address: 'Plot 18, Kemal Ataturk Avenue',
-      isDefault: false,
-    },
+    { id: 'addr-1', label: 'Home', recipientName: 'Joy Ahmed', phone: '01711234567', city: 'Dhaka', area: 'Gulshan-2', address: 'House 42, Road 11, Block D', isDefault: true },
+    { id: 'addr-2', label: 'Office', recipientName: 'Joy Ahmed', phone: '01711234567', city: 'Dhaka', area: 'Banani', address: 'Plot 18, Kemal Ataturk Avenue', isDefault: false },
   ],
 };
 
+const cleanEmail = (email) => email.trim().toLowerCase();
+function publicProfile(record) {
+  const profile = { ...record };
+  delete profile.password;
+  delete profile.passwordHash;
+  delete profile.salt;
+  return profile;
+}
+
+async function hashPassword(password, salt) {
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey('raw', encoder.encode(password), 'PBKDF2', false, ['deriveBits']);
+  const bits = await crypto.subtle.deriveBits({
+    name: 'PBKDF2', salt: encoder.encode(salt), iterations: 210000, hash: 'SHA-256',
+  }, key, 256);
+  return Array.from(new Uint8Array(bits), (byte) => byte.toString(16).padStart(2, '0')).join('');
+}
+
+async function passwordFields(password) {
+  const salt = crypto.randomUUID();
+  return { salt, passwordHash: await hashPassword(password, salt) };
+}
+
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(() => {
+  const [user, setUser] = useState(() => readStorage(SESSION, null));
+
+  function saveProfile(record) {
+    const users = readList(USERS);
+    const current = users.find((item) => cleanEmail(item.email) === cleanEmail(record.email));
+    const next = { ...current, ...record };
+    const profile = publicProfile(next);
+    const updated = users.filter((item) => cleanEmail(item.email) !== cleanEmail(next.email));
+    localStorage.setItem(USERS, JSON.stringify([...updated, next]));
+    localStorage.setItem(SESSION, JSON.stringify(profile));
+    setUser(profile);
+  }
+
+  async function login(email, password) {
     try {
-      const savedUser = localStorage.getItem(CURRENT_USER_KEY);
-      return savedUser ? JSON.parse(savedUser) : null;
+      const wanted = cleanEmail(email);
+      const record = readList(USERS).find((item) => cleanEmail(item.email) === wanted) ?? (wanted === DEMO.email ? DEMO : null);
+      if (!record || (record.passwordHash ? await hashPassword(password, record.salt) !== record.passwordHash : password !== record.password)) {
+        return { error: 'Email or password is incorrect.' };
+      }
+      const secureFields = crypto.subtle && !record.passwordHash ? await passwordFields(password) : {};
+      saveProfile({ ...record, ...secureFields, password: record.passwordHash || secureFields.passwordHash ? undefined : record.password });
+      return {};
     } catch {
-      return null;
+      return { error: 'Local sign-in is unavailable. Check browser storage and use localhost or HTTPS.' };
     }
-  });
+  }
 
-  // Seed default demo user if not present
-  useEffect(() => {
+  async function register(name, email, password) {
     try {
-      const existingUsers = localStorage.getItem(DEMO_USERS_KEY);
-      let users = existingUsers ? JSON.parse(existingUsers) : [];
-      const hasJoyMart = users.some((u) => u.email === 'demo@joymart.com');
-      if (!hasJoyMart) {
-        users.push(INITIAL_DEMO_USER);
-        localStorage.setItem(DEMO_USERS_KEY, JSON.stringify(users));
+      const normalizedEmail = cleanEmail(email);
+      if (normalizedEmail === DEMO.email || readList(USERS).some((item) => cleanEmail(item.email) === normalizedEmail)) {
+        return { error: 'An account with this email already exists on this browser.' };
       }
-    } catch (e) {
-      console.error('Failed to initialize demo users database:', e);
-    }
-  }, []);
-
-  const saveUserSession = (updatedUser) => {
-    setUser(updatedUser);
-    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(updatedUser));
-
-    // Also update in users database
-    try {
-      const users = JSON.parse(localStorage.getItem(DEMO_USERS_KEY) || '[]');
-      const idx = users.findIndex((u) => u.email.toLowerCase() === updatedUser.email.toLowerCase());
-      if (idx > -1) {
-        users[idx] = { ...users[idx], ...updatedUser };
-        localStorage.setItem(DEMO_USERS_KEY, JSON.stringify(users));
-      }
-    } catch (e) {
-      console.error('Failed to sync user database:', e);
-    }
-  };
-
-  const login = (email, password) => {
-    try {
-      const users = JSON.parse(localStorage.getItem(DEMO_USERS_KEY) || '[]');
-      const found = users.find(
-        (u) =>
-          u.email.toLowerCase() === email.trim().toLowerCase() &&
-          u.password === password
-      );
-
-      if (found) {
-        const sessionUser = {
-          name: found.name,
-          email: found.email,
-          phone: found.phone || '01700000000',
-          avatar: found.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
-          addresses: found.addresses || [],
-        };
-        saveUserSession(sessionUser);
-        return { success: true };
-      } else {
-        return { success: false, error: 'Invalid email or password.' };
-      }
+      if (name.trim().length < 2) return { error: 'Enter your full name.' };
+      if (password.length < 8) return { error: 'Use at least 8 characters for the demo password.' };
+      saveProfile({ name: name.trim(), email: normalizedEmail, phone: '', avatar: '', addresses: [], ...await passwordFields(password) });
+      return {};
     } catch {
-      return { success: false, error: 'Authentication failed. Please try again.' };
+      return { error: 'Local registration needs browser storage and localhost or HTTPS.' };
     }
-  };
+  }
 
-  const register = (name, email, password) => {
-    try {
-      const users = JSON.parse(localStorage.getItem(DEMO_USERS_KEY) || '[]');
-      const emailExists = users.some(
-        (u) => u.email.toLowerCase() === email.trim().toLowerCase()
-      );
+  function updateProfile(fields) {
+    saveProfile({ ...user, ...fields });
+  }
 
-      if (emailExists) {
-        return { success: false, error: 'An account with this email already exists.' };
-      }
+  function saveAddress(address, id = crypto.randomUUID()) {
+    const addresses = user.addresses ?? [];
+    const existing = addresses.find((item) => item.id === id);
+    const updated = { ...address, id, isDefault: existing?.isDefault ?? !addresses.length };
+    updateProfile({ addresses: existing ? addresses.map((item) => item.id === id ? updated : item) : [...addresses, updated] });
+  }
 
-      const newUser = {
-        name: name.trim(),
-        email: email.trim().toLowerCase(),
-        password,
-        phone: '',
-        avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80',
-        addresses: [],
-      };
-      users.push(newUser);
-      localStorage.setItem(DEMO_USERS_KEY, JSON.stringify(users));
+  function deleteAddress(id) {
+    const remaining = user.addresses.filter((item) => item.id !== id);
+    const defaultId = remaining.find((item) => item.isDefault)?.id ?? remaining[0]?.id;
+    updateProfile({ addresses: remaining.map((item) => ({ ...item, isDefault: item.id === defaultId })) });
+  }
 
-      const sessionUser = {
-        name: newUser.name,
-        email: newUser.email,
-        phone: newUser.phone,
-        avatar: newUser.avatar,
-        addresses: newUser.addresses,
-      };
-      saveUserSession(sessionUser);
+  function setDefaultAddress(id) {
+    updateProfile({ addresses: user.addresses.map((item) => ({ ...item, isDefault: item.id === id })) });
+  }
 
-      return { success: true };
-    } catch {
-      return { success: false, error: 'Registration failed. Please try again.' };
-    }
-  };
-
-  const updateProfile = ({ name, phone, avatar }) => {
-    if (!user) return;
-    const updated = {
-      ...user,
-      name: name ?? user.name,
-      phone: phone ?? user.phone,
-      avatar: avatar ?? user.avatar,
-    };
-    saveUserSession(updated);
-  };
-
-  const addAddress = (newAddress) => {
-    if (!user) return;
-    const addr = {
-      id: `addr-${Date.now()}`,
-      isDefault: (user.addresses || []).length === 0,
-      ...newAddress,
-    };
-    const updatedAddresses = [...(user.addresses || []), addr];
-    const updatedUser = { ...user, addresses: updatedAddresses };
-    saveUserSession(updatedUser);
-    return addr;
-  };
-
-  const updateAddress = (id, updatedFields) => {
-    if (!user) return;
-    const updatedAddresses = (user.addresses || []).map((addr) =>
-      addr.id === id ? { ...addr, ...updatedFields } : addr
-    );
-    saveUserSession({ ...user, addresses: updatedAddresses });
-  };
-
-  const deleteAddress = (id) => {
-    if (!user) return;
-    const remaining = (user.addresses || []).filter((addr) => addr.id !== id);
-    if (remaining.length > 0 && !remaining.some((a) => a.isDefault)) {
-      remaining[0].isDefault = true;
-    }
-    saveUserSession({ ...user, addresses: remaining });
-  };
-
-  const setDefaultAddress = (id) => {
-    if (!user) return;
-    const updatedAddresses = (user.addresses || []).map((addr) => ({
-      ...addr,
-      isDefault: addr.id === id,
-    }));
-    saveUserSession({ ...user, addresses: updatedAddresses });
-  };
-
-  const logout = () => {
+  function logout() {
+    localStorage.removeItem(SESSION);
     setUser(null);
-    localStorage.removeItem(CURRENT_USER_KEY);
-  };
+  }
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        login,
-        register,
-        logout,
-        updateProfile,
-        addAddress,
-        updateAddress,
-        deleteAddress,
-        setDefaultAddress,
-        isAuthenticated: !!user,
-      }}
-    >
+    <AuthContext.Provider value={{ user, isAuthenticated: Boolean(user), login, register, updateProfile, saveAddress, deleteAddress, setDefaultAddress, logout }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-}
+AuthProvider.propTypes = { children: PropTypes.node.isRequired };

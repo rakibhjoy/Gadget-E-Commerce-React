@@ -1,272 +1,148 @@
-import { useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import {
-  ArrowLeft,
-  ShoppingBag,
-  Check,
-  ShieldCheck,
-  Truck,
-  RotateCcw,
-  Minus,
-  Plus,
-  CreditCard,
-  MapPin,
-  Star
-} from 'lucide-react';
-import { products } from '../data/products';
-import { useCart } from '../context/CartContext';
+import { useEffect, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { ArrowRight, Check, Maximize2, Minus, Plus, ShieldCheck, ShoppingBag, Truck, X } from 'lucide-react';
+import { catalog, categoryPath, discountOf, productById } from '../data/catalog';
+import { useCart, useFavorites } from '../context/storeContexts';
+import ProductCard, { ProductActions } from '../components/ProductCard';
+import { Breadcrumbs, EmptyState, Price, ProductImage, Rating } from '../components/StoreUI';
+import { readList } from '../utils/storage';
 import { formatBDT } from '../utils/format';
+
+function Reviews({ product }) {
+  const key = 'joymart_reviews_' + product.id;
+  const [reviews, setReviews] = useState(() => readList(key));
+  const [message, setMessage] = useState('');
+  function submit(event) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    const comment = data.get('comment').trim();
+    if (comment.length < 5) {
+      setMessage('Write at least five characters.');
+      return;
+    }
+    try {
+      const next = [{ id: crypto.randomUUID(), rating: Number(data.get('rating')), comment }, ...readList(key)];
+      localStorage.setItem(key, JSON.stringify(next));
+      setReviews(next);
+      form.reset();
+      setMessage('Demo review saved on this browser.');
+    } catch {
+      setMessage('Your demo review could not be saved. Check browser storage.');
+    }
+  }
+
+  return <section className="panel details-panel" id="reviews" aria-labelledby="reviews-title">
+    <h2 id="reviews-title">Reviews</h2>
+    <Rating rating={product.rating} count={product.reviewsCount} />
+    <p className="muted">Demo catalog rating. Reviews written here are saved on this browser.</p>
+    {reviews.length ? <ul className="review-list">{reviews.map((review) => <li key={review.id}><b>{review.rating} / 5</b><p>{review.comment}</p></li>)}</ul> : <p>No local reviews yet.</p>}
+    <details><summary>Write a demo review</summary>
+      <form className="stack" onSubmit={submit}>
+        <label>Rating<select name="rating" defaultValue="5">{[5, 4, 3, 2, 1].map((rating) => <option key={rating} value={rating}>{rating} out of 5</option>)}</select></label>
+        <label>Review<textarea name="comment" minLength="5" maxLength="700" required rows="3" /></label>
+        <button className="button secondary" type="submit">Save demo review</button>
+      </form>
+    </details>
+    <p role="status">{message}</p>
+  </section>;
+}
+
+function ProductView({ product }) {
+  const { cart, addToCart } = useCart();
+  const { recordView } = useFavorites();
+  const navigate = useNavigate();
+  const [variantId, setVariantId] = useState(product.variants[0].id);
+  const [quantity, setQuantity] = useState(1);
+  const [view, setView] = useState(0);
+  const [zoom, setZoom] = useState(false);
+  const [added, setAdded] = useState(false);
+  const dialog = useRef(null);
+
+  useEffect(() => { recordView(product.id); }, [product.id, recordView]);
+
+  const variant = product.variants.find(({ id }) => id === variantId);
+  const remaining = Math.max(0, variant.stock - (cart.find((line) => line.product.id === product.id && line.variantId === variantId)?.quantity ?? 0));
+  const purchaseQuantity = Math.min(quantity, Math.max(remaining, 1));
+  const related = [...catalog.filter((item) => item.category === product.category && item.id !== product.id), ...catalog.filter((item) => item.category !== product.category && item.isFeatured)].slice(0, 4);
+  const discount = discountOf(product);
+  const views = product.images.length === 1 ? [...product.images, { ...product.images[0], label: 'Detail crop' }] : product.images;
+  const current = views[view];
+  const crop = current.label === 'Detail crop';
+  const buyLabel = !variant.stock ? 'Sold out' : !remaining ? 'Stock already in cart' : added ? 'Add another' : 'Add to cart';
+
+  function add() {
+    if (addToCart(product, purchaseQuantity, variantId)) {
+      setAdded(true);
+      setQuantity(1);
+    }
+  }
+
+  function buyNow() {
+    if (addToCart(product, purchaseQuantity, variantId)) navigate('/checkout');
+  }
+
+  return <div className="container page product-page">
+    <Breadcrumbs items={[{ label: 'Shop', to: '/products' }, { label: product.category, to: categoryPath(product.category) }, { label: product.name }]} />
+    <div className="product-layout">
+      <section className="gallery" aria-label="Product image gallery">
+        <button type="button" className="gallery-main" aria-label="Zoom product image" onClick={() => dialog.current.showModal()}>
+          <ProductImage src={current.src} alt={product.name + ' — ' + current.label} className={crop ? 'detail-crop' : ''} sizes="(max-width: 790px) 94vw, 560px" eager />
+          <span className="icon-button zoom-icon"><Maximize2 size={18} aria-hidden="true" /></span>
+        </button>
+        <div className="thumbnails">{views.map((image, index) => <button type="button" key={image.label} aria-label={'Show ' + image.label.toLowerCase()} aria-pressed={view === index} onClick={() => setView(index)}>
+          <ProductImage src={image.src} alt={image.label} sizes="65px" className={image.label === 'Detail crop' ? 'detail-crop' : ''} />
+        </button>)}</div>
+        <dialog className="zoom-dialog" ref={dialog} aria-labelledby="zoom-title" onClose={() => setZoom(false)}>
+          <div className="dialog-header"><strong id="zoom-title">{product.name}</strong><button type="button" className="icon-button" aria-label="Close image zoom" onClick={() => dialog.current.close()}><X size={22} /></button></div>
+          <button type="button" className="zoom-stage" onClick={() => setZoom(!zoom)} aria-pressed={zoom} aria-label={zoom ? 'Zoom out' : 'Zoom in'}>
+            <ProductImage src={current.src} alt={product.name + ' — ' + current.label} className={crop ? 'detail-crop' : ''} sizes="(max-width: 800px) 94vw, 780px" />
+          </button>
+        </dialog>
+      </section>
+      <section className="product-info">
+        <div className="between product-meta"><span className="eyebrow">{product.brand} · {product.category}</span><ProductActions id={product.id} name={product.name} /></div>
+        <h1>{product.name}</h1>
+        <a href="#reviews" className="rating-link"><Rating rating={product.rating} count={product.reviewsCount} /></a>
+        <div className="detail-price"><Price price={product.price} original={product.originalPrice} />{discount > 0 && <span className="chip sale-tag">Save {formatBDT(product.originalPrice - product.price)}</span>}</div>
+        <p className="muted">{product.description}</p>
+        {product.variants.length > 1 && <fieldset className="variant-field"><legend>Finish</legend>
+          <div className="variant-options">{product.variants.map((item) => <label key={item.id}><input type="radio" name="variant" value={item.id} checked={item.id === variantId} onChange={() => {
+            setVariantId(item.id); setQuantity(1); setAdded(false);
+          }} /> {item.label}</label>)}</div><small className="muted">Demo finishes share the catalog photo.</small>
+        </fieldset>}
+        <p className={variant.stock ? 'stock in-stock' : 'stock sold-out'}><span />{variant.stock > 3 ? 'In stock' : variant.stock ? 'Only ' + variant.stock + ' left' : 'Out of stock'} · Demo inventory</p>
+        <div className="purchase">
+          <div className="quantity" aria-label="Quantity">
+            <button type="button" aria-label="Decrease quantity" disabled={purchaseQuantity <= 1} onClick={() => setQuantity(purchaseQuantity - 1)}><Minus size={16} /></button>
+            <output aria-live="polite">{purchaseQuantity}</output>
+            <button type="button" aria-label="Increase quantity" disabled={purchaseQuantity >= remaining} onClick={() => setQuantity(purchaseQuantity + 1)}><Plus size={16} /></button>
+          </div>
+          <button type="button" className="button primary desktop-purchase" disabled={!remaining} onClick={add}><ShoppingBag size={18} /> {buyLabel}</button>
+          <button type="button" className="button primary" disabled={!remaining} onClick={buyNow}>Buy now</button>
+          {added && <Link to="/cart" className="text-link"><Check size={17} /> View cart</Link>}
+        </div>
+        <div className="product-services">
+          <Link to="/support/shipping-returns"><Truck size={21} /><span><b>Delivery across Bangladesh</b><small>See delivery options at checkout</small></span><ArrowRight size={16} /></Link>
+          <Link to="/support/warranty"><ShieldCheck size={21} /><span><b>Brand warranty</b><small>Confirm coverage and duration with support</small></span><ArrowRight size={16} /></Link>
+        </div>
+      </section>
+    </div>
+    <div className="product-detail-grid">
+      <section className="panel details-panel"><h2>Technical specifications</h2><dl className="spec-sheet"><div><dt>Brand</dt><dd>{product.brand}</dd></div>{Object.entries(product.attributes).map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl><ul className="spec-list">{product.specs.map((spec) => <li key={spec}>{spec}</li>)}</ul></section>
+      <Reviews product={product} />
+    </div>
+    <section className="home-section"><div className="section-heading"><h2>Related products</h2><Link className="text-link" to={categoryPath(product.category)}>Explore category <ArrowRight size={17} /></Link></div><div className="product-grid">{related.map((item) => <ProductCard product={item} key={item.id} />)}</div></section>
+    <div className="mobile-purchase"><strong>{formatBDT(product.price)}</strong><button type="button" className="button primary" disabled={!remaining} onClick={add}><ShoppingBag size={18} /> {buyLabel}</button></div>
+  </div>;
+}
+
+Reviews.propTypes = { product: PropTypes.object.isRequired };
+ProductView.propTypes = { product: PropTypes.object.isRequired };
 
 export default function ProductDetails() {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const { addToCart } = useCart();
-  const [quantity, setQuantity] = useState(1);
-  const [added, setAdded] = useState(false);
-
-  const product = products.find((p) => p.id === id);
-
-  if (!product) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 py-20 text-center">
-        <h2 className="text-2xl font-bold text-[#252525]">Product Not Found</h2>
-        <p className="mt-2 text-sm text-[#777777]">
-          The requested device does not exist or has been discontinued.
-        </p>
-        <Link
-          to="/products"
-          className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 bg-[#E98545] text-white rounded-xl text-sm font-semibold hover:bg-[#D6742F]"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back to Joy Mart Catalog</span>
-        </Link>
-      </div>
-    );
-  }
-
-  const discountPercent = product.originalPrice && product.originalPrice > product.price
-    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
-    : 0;
-
-  const emiPerMonth = Math.round(product.price / 12);
-
-  const handleAddToCart = () => {
-    addToCart(product, quantity);
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
-  };
-
-  return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-14">
-      
-      {/* Breadcrumb Navigation */}
-      <nav className="flex items-center gap-2 text-xs text-[#777777] mb-8">
-        <Link to="/" className="hover:text-[#E98545]">Home</Link>
-        <span>/</span>
-        <Link to="/products" className="hover:text-[#E98545]">Products</Link>
-        <span>/</span>
-        <Link to={`/products?category=${encodeURIComponent(product.category)}`} className="hover:text-[#E98545]">
-          {product.category}
-        </Link>
-        <span>/</span>
-        <span className="text-[#252525] font-bold truncate">{product.name}</span>
-      </nav>
-
-      {/* Main Product Showcase */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
-        
-        {/* Left: Product Image Showcase — Glass */}
-        <div className="glass rounded-3xl overflow-hidden aspect-square relative group shadow-glass-card p-4">
-          <div className="w-full h-full rounded-2xl overflow-hidden bg-[#F3F1ED] relative">
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
-            />
-            
-            <div className="absolute top-4 left-4 flex flex-col gap-2">
-              <span className="px-3 py-1 rounded-full text-xs font-bold glass-chip text-[#252525] shadow-sm">
-                {product.availability}
-              </span>
-              {discountPercent > 0 && (
-                <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#E98545] text-white shadow-sm">
-                  {discountPercent}% SAVINGS
-                </span>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Right: Product Info & Actions — Glass */}
-        <div className="glass rounded-3xl p-6 sm:p-10 shadow-glass-card flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#E98545]">
-                {product.category}
-              </span>
-              <div className="flex items-center gap-1.5 text-xs text-[#252525] bg-[#FBE9DC] px-3 py-1 rounded-full">
-                <Star className="w-3.5 h-3.5 fill-[#E98545] text-[#E98545]" />
-                <span className="font-bold text-[#252525]">{product.rating}</span>
-                <span className="text-[#777777]">({product.reviewsCount} customer reviews)</span>
-              </div>
-            </div>
-
-            <h1 className="mt-3 text-2xl sm:text-4xl font-extrabold text-[#252525] tracking-tight leading-snug">
-              {product.name}
-            </h1>
-
-            {/* Price and EMI Tag */}
-            <div className="mt-4 pb-4 border-b border-[#E7E5E1]">
-              <div className="flex items-baseline gap-3">
-                <span className="text-3xl sm:text-4xl font-black text-[#252525]">
-                  {formatBDT(product.price)}
-                </span>
-                {product.originalPrice && (
-                  <span className="text-base text-[#D9534F] line-through">
-                    {formatBDT(product.originalPrice)}
-                  </span>
-                )}
-              </div>
-              <div className="mt-2 flex items-center gap-2 text-xs text-[#777777]">
-                <CreditCard className="w-3.5 h-3.5 text-[#E98545]" />
-                <span>
-                  Or pay from <strong className="text-[#252525]">{formatBDT(emiPerMonth)}/month</strong> with 0% EMI (up to 12 months)
-                </span>
-              </div>
-            </div>
-
-            <p className="mt-5 text-sm text-[#777777] leading-relaxed">
-              {product.description}
-            </p>
-
-            {/* Hardware Specifications */}
-            <div className="mt-6 pt-5 border-t border-[#E7E5E1]">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#252525] mb-3">
-                Key Technical Specifications
-              </h3>
-              <ul className="space-y-2 text-xs sm:text-sm text-[#777777]">
-                {product.specs?.map((spec, i) => (
-                  <li key={i} className="flex items-start gap-2.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#E98545] mt-2 flex-shrink-0"></span>
-                    <span>{spec}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Delivery Timeline info — Glass Accent */}
-            <div className="mt-6 p-3.5 glass-accent rounded-2xl text-xs text-[#252525] space-y-1.5">
-              <div className="flex items-center gap-2 font-bold text-[#252525]">
-                <MapPin className="w-4 h-4 text-[#E98545]" />
-                <span>Joy Mart Express Delivery Coverage:</span>
-              </div>
-              <p className="text-[11px] text-[#777777] pl-6">
-                • <strong>Dhaka City:</strong> Guaranteed delivery within 24 hours. <br />
-                • <strong>Chittagong, Sylhet & Nationwide:</strong> 48 to 72 hours via courier.
-              </p>
-            </div>
-          </div>
-
-          {/* Quantity Selector & Add to Cart */}
-          <div className="mt-8 pt-6 border-t border-[#E7E5E1] space-y-4">
-            <div className="flex items-center gap-4">
-              <label htmlFor="quantity-selector" className="text-xs font-bold text-[#252525]">
-                Quantity:
-              </label>
-              <div className="inline-flex items-center border border-[#E7E5E1] rounded-xl bg-[#F3F1ED]">
-                <button
-                  type="button"
-                  id="decrease-qty-btn"
-                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  className="p-2 text-[#777777] hover:text-[#E98545] transition-colors"
-                  aria-label="Decrease quantity"
-                >
-                  <Minus className="w-4 h-4" />
-                </button>
-                <span id="quantity-selector" className="w-10 text-center text-sm font-bold text-[#252525]">
-                  {quantity}
-                </span>
-                <button
-                  type="button"
-                  id="increase-qty-btn"
-                  onClick={() => setQuantity((q) => q + 1)}
-                  className="p-2 text-[#777777] hover:text-[#E98545] transition-colors"
-                  aria-label="Increase quantity"
-                >
-                  <Plus className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-3">
-              <button
-                onClick={handleAddToCart}
-                id="add-to-cart-detail-btn"
-                className={`flex-1 inline-flex items-center justify-center gap-2 py-4 px-6 rounded-xl font-bold text-sm transition-all shadow-md active:scale-95 ${
-                  added
-                    ? 'bg-[#27845A] text-white'
-                    : 'bg-[#252525] hover:bg-[#3a3a3a] text-white'
-                }`}
-              >
-                {added ? (
-                  <>
-                    <Check className="w-4 h-4" />
-                    <span>Added to Cart!</span>
-                  </>
-                ) : (
-                  <>
-                    <ShoppingBag className="w-4 h-4" />
-                    <span>Add to Cart — {formatBDT(product.price * quantity)}</span>
-                  </>
-                )}
-              </button>
-
-              <button
-                onClick={() => {
-                  addToCart(product, quantity);
-                  navigate('/cart');
-                }}
-                className="py-4 px-6 rounded-xl font-bold text-sm bg-[#E98545] hover:bg-[#D6742F] text-white transition-colors shadow-xs"
-              >
-                Buy Now
-              </button>
-            </div>
-
-            {/* Assurance Badges */}
-            <div className="grid grid-cols-3 gap-2 pt-2 text-center">
-              <div className="p-2.5 rounded-xl bg-[#F3F1ED] border border-[#E7E5E1] text-[11px] text-[#777777]">
-                <Truck className="w-3.5 h-3.5 mx-auto mb-1 text-[#E98545]" />
-                <span className="font-semibold block text-[#252525]">Express Ship</span>
-                <span>All 64 Districts</span>
-              </div>
-              <div className="p-2.5 rounded-xl bg-[#F3F1ED] border border-[#E7E5E1] text-[11px] text-[#777777]">
-                <RotateCcw className="w-3.5 h-3.5 mx-auto mb-1 text-[#E98545]" />
-                <span className="font-semibold block text-[#252525]">7 Days</span>
-                <span>Replacement</span>
-              </div>
-              <div className="p-2.5 rounded-xl bg-[#F3F1ED] border border-[#E7E5E1] text-[11px] text-[#777777]">
-                <ShieldCheck className="w-3.5 h-3.5 mx-auto mb-1 text-[#E98545]" />
-                <span className="font-semibold block text-[#252525]">Official</span>
-                <span>Brand Warranty</span>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-      {/* Back to Products CTA */}
-      <div className="mt-14 pt-8 border-t border-[#E7E5E1]">
-        <Link
-          to="/products"
-          className="inline-flex items-center gap-2 text-xs font-bold text-[#252525] hover:text-[#E98545] hover:underline"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back to All Joy Mart Hardware</span>
-        </Link>
-      </div>
-
-    </div>
-  );
+  const product = Object.hasOwn(productById, id) ? productById[id] : null;
+  return product ? <ProductView product={product} key={product.id} /> : <EmptyState title="Product unavailable" text="This gadget could not be found in the current catalog." />;
 }

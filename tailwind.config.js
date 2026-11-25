@@ -7,56 +7,56 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Clean Tech + Warm Orange Palette
+        // Joy Mart storefront palette
         primary: {
           bg: '#FFFFFF',
-          text: '#252525',
+          text: 'var(--ink)',
         },
         secondary: {
-          bg: '#F3F1ED',
+          bg: 'var(--surface)',
         },
         accent: {
-          DEFAULT: '#E98545',  // Warm Orange
-          hover: '#D6742F',
-          soft: '#FBE9DC',
-          light: '#FDF4EE',
+          DEFAULT: 'var(--accent)',
+          hover: 'var(--accent-hover)',
+          soft: 'var(--accent-soft)',
+          light: 'var(--accent-soft)',
         },
         border: {
-          DEFAULT: '#E7E5E1',
-          light: '#F0EEEA',
+          DEFAULT: 'var(--line)',
+          light: 'var(--line)',
         },
-        muted: '#777777',
-        success: '#27845A',
-        sale: '#D9534F',
+        muted: 'var(--muted)',
+        success: 'var(--stock)',
+        sale: 'var(--danger)',
         footer: {
-          bg: '#252525',
+          bg: 'var(--ink)',
           text: '#FFFFFF',
         },
         // Legacy aliases for easy migration
         offwhite: {
-          DEFAULT: '#FFFFFF',
+          DEFAULT: 'var(--surface)',
           card: '#FFFFFF',
-          subtle: '#F3F1ED',
-          border: '#E7E5E1',
+          subtle: 'var(--surface)',
+          border: 'var(--line)',
         },
         brand: {
-          DEFAULT: '#252525',
-          hover: '#3a3a3a',
-          accent: '#E98545',
-          emerald: '#27845A',
+          DEFAULT: 'var(--ink)',
+          hover: '#1E293B',
+          accent: 'var(--accent)',
+          emerald: 'var(--stock)',
         },
       },
       fontFamily: {
-        sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
+        sans: ['"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
       },
       backdropBlur: {
         glass: '16px',
       },
       boxShadow: {
-        'glass': '0 8px 32px 0 rgba(233, 133, 69, 0.08)',
-        'glass-lg': '0 16px 48px 0 rgba(233, 133, 69, 0.12)',
-        'glass-card': '0 4px 24px 0 rgba(37, 37, 37, 0.06)',
-        'warm-glow': '0 0 40px rgba(233, 133, 69, 0.15)',
+        'glass': '0 8px 32px 0 rgba(15, 23, 42, 0.08)',
+        'glass-lg': '0 16px 48px 0 rgba(15, 23, 42, 0.12)',
+        'glass-card': '0 4px 24px 0 rgba(15, 23, 42, 0.06)',
+        'accent-glow': '0 0 40px rgba(15, 23, 42, 0.15)',
       },
     },
   },
