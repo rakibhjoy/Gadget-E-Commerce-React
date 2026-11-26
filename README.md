@@ -1,5 +1,7 @@
 # Joy Mart
 
+live :https://rakibhjoy.github.io/Gadget-E-Commerce-React/
+
 Joy Mart is a responsive gadget storefront for Bangladesh. It uses the existing React 18, Vite 4, React Router 6, and Lucide setup. Product IDs, original catalog photography, the JM mark, and Bangladeshi taka pricing are retained.
 
 ## Run locally
