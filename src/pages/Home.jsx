@@ -43,7 +43,7 @@ export default function Home() {
         <div className="container hero-layout">
           <div className="hero-copy">
             <p className="hero-kicker">Audio &amp; sound</p>
-            <h1 id="hero-title">A better way<br />to listen.</h1>
+            <h1 id="hero-title">A better way to listen.</h1>
             <p className="hero-description">Headphones, earbuds and speakers for the way you listen.</p>
             <div className="hero-actions">
               <Link className="button primary" to={categoryPath('Audio & Sound')}>Shop audio <ArrowUpRight size={16} aria-hidden="true" /></Link>

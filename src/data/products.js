@@ -46,6 +46,7 @@ export const products = [
     isDeal: true,
     availability: "In Stock (Dhaka Hub)",
     image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=800&q=80",
+    shortDescription: "Titanium build with a smooth 120 Hz OLED display.",
     description: "Aerospace-grade natural titanium frame with ultra-fluid 120Hz LTPO ProMotion display and next-generation A-Bionic neural processor.",
     specs: [
       "6.7\" Super Retina XDR OLED (120Hz Adaptive)",
@@ -67,6 +68,7 @@ export const products = [
     isDeal: true,
     availability: "In Stock",
     image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80",
+    shortDescription: "Clean software with a 120 Hz AMOLED display.",
     description: "Distraction-free pure OS with monochromatic glyph lighting, ceramic composite shell, and zero pre-installed bloatware.",
     specs: [
       "6.3\" 120Hz Flexible AMOLED Screen",
@@ -88,6 +90,7 @@ export const products = [
     isDeal: false,
     availability: "Only 2 left",
     image: "https://images.unsplash.com/photo-1580910051074-3eb694886505?auto=format&fit=crop&w=800&q=80",
+    shortDescription: "Foldable OLED with a dual-display design.",
     description: "Creaseless dual-display folding architecture with armor aluminum hinge and immersive tablet productivity mode.",
     specs: [
       "7.8\" Foldable Dynamic AMOLED 2X",
@@ -111,6 +114,7 @@ export const products = [
     isDeal: true,
     availability: "In Stock",
     image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80",
+    shortDescription: "Lightweight aluminum laptop with a Retina display.",
     description: "Featherlight unibody CNC aluminum workstation with liquid retina display and silent fanless architecture for all-day coding.",
     specs: [
       "14.2\" Liquid Retina XDR (1,600 nits peak)",
@@ -132,6 +136,7 @@ export const products = [
     isDeal: false,
     availability: "In Stock",
     image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=800&q=80",
+    shortDescription: "Carbon fiber laptop with RTX graphics and OLED.",
     description: "Forged carbon fiber high-performance notebook with RTX studio graphics, color-accurate OLED screen, and dual vapor-chamber cooling.",
     specs: [
       "16\" 4K OLED Touch HDR 100% DCI-P3",
@@ -155,6 +160,7 @@ export const products = [
     isDeal: true,
     availability: "In Stock",
     image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80",
+    shortDescription: "Over-ear headphones with adaptive noise cancelling.",
     description: "Lossless beryllium acoustic drivers with adaptive hybrid noise cancelling, memory foam ear cups, and multi-device connection.",
     specs: [
       "40mm High-Resolution Beryllium Drivers",
@@ -176,6 +182,7 @@ export const products = [
     isDeal: true,
     availability: "In Stock",
     image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=800&q=80",
+    shortDescription: "Water-resistant earbuds with wireless charging.",
     description: "Compact IPX5 water-resistant earbuds with punchy bass, crystal-clear 6-mic phone calls, and wireless Qi charging case.",
     specs: [
       "Active Noise Cancellation with Transparency Mode",
@@ -197,6 +204,7 @@ export const products = [
     isDeal: false,
     availability: "In Stock",
     image: "https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=800&q=80",
+    shortDescription: "Waterproof speaker with room-filling sound.",
     description: "360-degree room-filling acoustic sound enclosed in waterproof acoustic fabric with tactile metallic volume control knob.",
     specs: [
       "60W Quad-Driver 360 Acoustic Output",
@@ -220,6 +228,7 @@ export const products = [
     isDeal: true,
     availability: "In Stock",
     image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80",
+    shortDescription: "Titanium smartwatch with sapphire glass and GPS.",
     description: "Rugged sapphire crystal display with grade 5 titanium casing, precision dual-frequency GPS, ECG, and blood oxygen health metrics.",
     specs: [
       "49mm Aerospace Titanium Case",
@@ -241,6 +250,7 @@ export const products = [
     isDeal: false,
     availability: "In Stock",
     image: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=800&q=80",
+    shortDescription: "Steel smartwatch with a leather strap and fitness modes.",
     description: "Sleek stainless steel circular dial with Italian leather strap, 100+ fitness workout modes, and Bluetooth phone call functionality.",
     specs: [
       "1.43\" AMOLED Always-On Display",
@@ -264,6 +274,7 @@ export const products = [
     isDeal: true,
     availability: "In Stock",
     image: "https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?auto=format&fit=crop&w=800&q=80",
+    shortDescription: "Gamepad with magnetic sticks and rear paddles.",
     description: "Hall-effect zero-drift magnetic joysticks, mechanical microswitch buttons, and customizable rear paddles for PC and consoles.",
     specs: [
       "Hall Effect Anti-Drift Thumbsticks",
@@ -285,6 +296,7 @@ export const products = [
     isDeal: false,
     availability: "In Stock",
     image: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&w=800&q=80",
+    shortDescription: "Wireless gaming audio with 7.1 surround sound.",
     description: "Ultra-low latency lossless wireless gaming audio with spatial 7.1 directional sound and broadcast-grade detachable microphone.",
     specs: [
       "53mm Neodymium High-Density Drivers",
@@ -308,6 +320,7 @@ export const products = [
     isDeal: true,
     availability: "In Stock",
     image: "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=800&q=80",
+    shortDescription: "Compact GaN charger for up to three devices.",
     description: "Compact GaN III fast charger capable of simultaneously powering your laptop, smartphone, and tablet at full speed.",
     specs: [
       "3x USB-C Power Delivery 3.0 (100W Max)",
@@ -329,6 +342,7 @@ export const products = [
     isDeal: false,
     availability: "In Stock",
     image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=800&q=80",
+    shortDescription: "Aluminum keyboard with hot-swappable switches.",
     description: "CNC machined aluminum case with custom sound-dampening gasket mount, hot-swappable switches, and multi-device Bluetooth.",
     specs: [
       "75% Compact Layout with CNC Rotary Knob",
@@ -350,6 +364,7 @@ export const products = [
     isDeal: true,
     availability: "In Stock",
     image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=800&q=80",
+    shortDescription: "Magnetic aluminum stand with adjustable tilt.",
     description: "Anodized aerospace aluminum stand with strong N52 neodymium magnetic locking and 360-degree dual-axis ergonomic tilt.",
     specs: [
       "Heavy weighted non-slip silicone base",
@@ -371,6 +386,7 @@ export const products = [
     isDeal: false,
     availability: "In Stock",
     image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=800&q=80",
+    shortDescription: "Braided 2 m USB-C cable with 240 W charging.",
     description: "Double-braided nylon reinforced 2-meter USB-C cable supporting 240W charging and 40Gbps ultra-fast data transfer.",
     specs: [
       "240W Power Delivery 3.1 Certified",

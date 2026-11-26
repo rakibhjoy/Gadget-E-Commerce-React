@@ -3,7 +3,7 @@
 .hero {
   position: relative;
   display: grid;
-  min-height: clamp(500px, 45vw, 725px);
+  min-height: clamp(390px, 39vw, 560px);
   overflow: hidden;
   isolation: isolate;
   background: #050f20;
@@ -52,17 +52,13 @@
 }
 
 .hero h1 {
-  font-size: clamp(3.4rem, 6.6vw, 6.7rem);
   font-weight: 700;
-  letter-spacing: -.065em;
-  line-height: .95;
 }
 
 .hero-description {
   max-width: 32ch;
   margin-top: 21px;
   color: #E2E8F0;
-  font-size: clamp(1rem, 1.5vw, 1.18rem);
 }
 
 .hero-actions {
@@ -74,7 +70,7 @@
 }
 
 .hero-actions .button { min-height: 48px; padding-inline: 17px; }
-.hero-link { min-height: 44px; display: inline-flex; align-items: center; gap: 7px; color: var(--white); font-size: .9rem; font-weight: 700; }
+.hero-link { min-height: 44px; display: inline-flex; align-items: center; gap: 7px; color: var(--white); font-weight: 700; }
 .hero-link:hover { text-decoration: underline; text-underline-offset: 4px; }
 .hero :focus-visible { outline-color: var(--accent-on-dark); }
 
@@ -97,7 +93,6 @@
 .story-card .product-image img { transition: transform .28s ease; }
 .story-card:hover .product-image img { transform: scale(1.025); }
 .story-copy { padding: clamp(20px, 2.6vw, 36px); }
-.story-copy h2 { font-size: clamp(1.65rem, 3.4vw, 3.25rem); }
 .story-copy p { margin-top: 10px; color: var(--muted); }
 .story-copy .text-link { display: inline-block; margin-top: 13px; font-size: .85rem; }
 .story-card:hover .text-link { text-decoration: underline; text-underline-offset: 3px; }
@@ -169,7 +164,6 @@
   .hero { display: flex; flex-direction: column; min-height: 0; }
   .hero-layout { order: -1; }
   .hero-copy { width: 100%; padding-block: 34px 13px; }
-  .hero h1 { font-size: clamp(2.8rem, 9vw, 4.65rem); }
   .hero-kicker { margin-bottom: 11px; }
   .hero-description { margin-top: 14px; }
   .hero-actions { gap: 7px 15px; margin-top: 16px; }
